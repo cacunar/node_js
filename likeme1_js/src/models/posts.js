@@ -24,8 +24,35 @@ const obtenerPosts = async () => {
     }
 }
 
+const actualizarPost = async (id) => {
+    try {
+        const SQLQuery = "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *";
+        const SQLValues = [id];
+        const { rows } = await DB.query(SQLQuery, SQLValues);
+    
+        return rows[0]
+      } catch (error) {
+        throw error;
+      }
+}
+
+const eliminarPost = async (id) => {
+    try {
+        const SQLQuery = "DELETE FROM posts WHERE id = $1"
+        const SQLValues = [ id ]
+        const { rows } = await DB.query(SQLQuery, SQLValues)
+
+        return rows
+    } catch (error) {
+        throw error
+    }
+}
+
+
 
 module.exports = {
     agregarPost,
-    obtenerPosts
+    obtenerPosts,
+    actualizarPost,
+    eliminarPost
 }
